@@ -30,3 +30,21 @@ y con el alcance previsto en la legislación sobre propiedad intelectual." match
 - dates: maybe this is a kind of exactly text, but is very important because these documents the media publish information when this this is relevant, and this is indicate by the date, soy maybe two documents talking about the same but one during the votation in the congress and another a few month ago, the first is most important.
 - names: the people who work or are relationated with the topic of the documents is very important overall in politics.
 
+## kind of problem
+
+If we think in our problem, we have a lot of documents and we need to relationated for word coincidences between then and served grouped by text searches.
+
+We can think in outputs and inputs to understand this.
+
+data input - goverments documents and media documents for newspapers
+raw data - content without html of data input
+grouped data - grouped of documents from raw data relationated.
+
+user search - text to find grouped documents, this text matched with the "index" of the group or groups.
+user data - data that the application offer to user after user search.
+
+With this information we can think that the solution most correctly is the next:
+
+model - grouped model or gradiente model, beacuse we need to group the "nodes" of the data model.
+algorithm - Unsupervised machine learning, because we don't know what are the groups, the engine need to understand that some documents are a new group or belongs to a existing group.
+focus - clustering, it's the principal modus to grouped in machine learning.
