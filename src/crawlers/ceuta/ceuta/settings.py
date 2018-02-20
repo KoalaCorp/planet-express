@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 # Scrapy settings for ceuta project
 #
 # For simplicity, this file contains only settings considered important or

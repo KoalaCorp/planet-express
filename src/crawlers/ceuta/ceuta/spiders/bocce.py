@@ -3,7 +3,6 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
-from settings import FILE_FOLDER
 
 class BocceSpider(CrawlSpider):
     name = 'bocce'
@@ -28,7 +27,7 @@ class BocceSpider(CrawlSpider):
     def parse_pdf(self, response):
         i = {}
 
-        pdf_file = open(FILE_FOLDER+'/'+self.name+'/'+response.url.split('/')[-1].split('?')[0]+'.pdf', 'wb')
+        pdf_file = open(self.settings.get('FILE_FOLDER')+'/'+self.name+'/'+response.url.split('/')[-1].split('?')[0]+'.pdf', 'wb')
         pdf_file.write(response.body)
         pdf_file.close()
 
