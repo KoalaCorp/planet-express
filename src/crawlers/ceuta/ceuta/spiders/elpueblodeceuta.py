@@ -3,8 +3,8 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
-
 from ceuta.loaders import el_pueblo_de_ceuta_loader
+
 
 class ElpueblodeceutaSpider(CrawlSpider):
     name = 'elpueblodeceuta'

@@ -93,4 +93,9 @@ ITEM_PIPELINES = {
 MONGO_URI = 'mongodb://localhost:27017/'
 MONGO_DATABASE = 'ceuta'
 
-FILE_FOLDER = os.path.dirname(__file__)
+FILE_FOLDER = '/tmp'
+
+try:
+    from ceuta.local_settings import *
+except ImportError:
+    pass

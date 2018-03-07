@@ -3,6 +3,8 @@ import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
+from ceuta.loaders import bocce_loader
+
 
 class BocceSpider(CrawlSpider):
     name = 'bocce'
@@ -20,15 +22,15 @@ class BocceSpider(CrawlSpider):
                 follow=True),
         Rule(
             LinkExtractor(
-                allow=r'http://www.ceuta.es/ceuta/component/jdownloads/finish/\d+-.*/.*\?Itemid=\d+')
+                allow=r'http://www.ceuta.es/ceuta/component/jdownloads/finish/\d+-.*/.*\?Itemid=\d+'),
+                callback='parse_pdf'
             )
     )
 
     def parse_pdf(self, response):
-        i = {}
+        file_path = '{}/{}/{}.pdf'.format(
+            self.settings.get('FILE_FOLDER'),
+            self.name,
+            response.url.split('/')[-1].split('?')[0])
 
-        pdf_file = open(self.settings.get('FILE_FOLDER')+'/'+self.name+'/'+response.url.split('/')[-1].split('?')[0]+'.pdf', 'wb')
-        pdf_file.write(response.body)
-        pdf_file.close()
-
-        return i
+        return bocce_loader(response, file_path, self.name)

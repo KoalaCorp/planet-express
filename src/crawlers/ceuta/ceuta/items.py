@@ -7,12 +7,26 @@
 from scrapy import Item, Field
 
 
-class CeutaItem(Item):
+class BaseItem(Item):
     url = Field()
+    scraped = Field()
+    updated = Field()
 
-class ElPuebloDeCeutaItem(Item):
-    url = Field()
+
+class BocceItem(BaseItem):
+    file_path = Field()
+
+
+class CeutaItem(BaseItem):
     autor = Field()
     date_time = Field()
     title = Field()
     content = Field()
+
+
+class ElPuebloDeCeutaItem(CeutaItem):
+    pass
+
+
+class ElFaroDeCeutaItem(CeutaItem):
+    pass
