@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
 
@@ -12,7 +11,8 @@ class ElpueblodeceutaSpider(CrawlSpider):
     start_urls = ['http://elpueblodeceuta.es/']
 
     rules = (
-        Rule(LinkExtractor(allow=r'not/\d+/'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'not/\d+/'), callback='parse_item',
+             follow=True),
         Rule(LinkExtractor(allow=r'.*'), follow=True),
     )
 

@@ -95,6 +95,11 @@ MONGO_DATABASE = 'ceuta'
 
 FILE_FOLDER = '/tmp'
 
+DUPEFILTER_CLASS = "ceuta.dupefilter.RedisDupeFilter"
+
+# 30 days in seconds
+EXPIRE_REDIS_KEY = 30*24*60*60
+
 try:
     from ceuta.local_settings import *
 except ImportError:
