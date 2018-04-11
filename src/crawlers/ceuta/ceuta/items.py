@@ -14,7 +14,9 @@ class BaseItem(Item):
 
 
 class BocceItem(BaseItem):
+    url = Field()
     file_path = Field()
+    content = Field()
 
 
 class CeutaItem(BaseItem):

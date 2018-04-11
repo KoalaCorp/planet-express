@@ -1,4 +1,5 @@
 import logging
+import subprocess
 
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst, Join
@@ -7,6 +8,7 @@ from ceuta.items import ElPuebloDeCeutaItem, ElFaroDeCeutaItem, BocceItem
 
 
 logger = logging.getLogger()
+
 
 def bocce_loader(response, file_path, name):
     bocce = BocceItem()
@@ -20,11 +22,18 @@ def bocce_loader(response, file_path, name):
     logger.info('{} file downloaded: {}'.format(
         name, file_path))
 
+    content = subprocess.run(['pdftotext', file_path, '-'],
+                             stdout=subprocess.PIPE)
+    bocce['content'] = str(content.stdout, 'utf-8')\
+        .replace('\n ', '').replace('\n', ' ')
+
     return bocce
+
 
 class ElPuebloDeCeutaLoader(ItemLoader):
     default_output_processor = TakeFirst()
     content_out = Join()
+
 
 def el_pueblo_de_ceuta_loader(response):
     item = ElPuebloDeCeutaLoader(
@@ -41,6 +50,7 @@ def el_pueblo_de_ceuta_loader(response):
 class ElFaroDeCeutaLoader(ItemLoader):
     default_output_processor = TakeFirst()
     content_out = Join()
+
 
 def el_faro_de_ceuta_loader(response):
     item = ElFaroDeCeutaLoader(
