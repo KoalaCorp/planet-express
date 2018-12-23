@@ -57,9 +57,9 @@ def el_faro_de_ceuta_loader(response):
         item=ElFaroDeCeutaItem(),
         response=response)
     item.add_value('url', response.url)
-    item.add_xpath('autor', '//a[@class="autor"]/text()')
-    item.add_xpath('date_time', '//span[@class="updated"]/text()')
-    item.add_xpath('title', '//h1[@class="entry-title"]/text()')
+    item.add_xpath('autor', '//div[@class="jeg_meta_autor"]/a/text()')
+    item.add_xpath('date_time', '//div[@class="jeg_meta_date"]/a/text()')
+    item.add_xpath('title', '//div[@class="entry-header"]/h1/text()')
     item.add_xpath('content',
-                   '//div[@class="post-content entry-content"]/node()/text()')
+                   '//div[@class="content-inner"]/node()/text()')
     return item.load_item()

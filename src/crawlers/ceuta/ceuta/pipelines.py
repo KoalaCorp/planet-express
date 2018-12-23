@@ -4,7 +4,9 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import pymongo
+import json
+
+import pika
 
 
 class CeutaPipeline(object):
@@ -12,28 +14,30 @@ class CeutaPipeline(object):
         return item
 
 
-class MongoPipeline(object):
-
-    collection_name = 'scrapy_items'
-
-    def __init__(self, mongo_uri, mongo_db):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
+class RabbitMQPipeline(object):
+    def __init__(self, rabbitmq_uri, rabbitmq_queue):
+        self.rabbitmq_uri = rabbitmq_uri
+        self.rabbitmq_queue = rabbitmq_queue
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
-            mongo_uri=crawler.settings.get('MONGO_URI'),
-            mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
+            rabbitmq_uri=crawler.settings.get('RABBITMQ_URI'),
+            rabbitmq_queue=crawler.settings.get('RABBITMQ_QUEUE', 'items')
         )
 
     def open_spider(self, spider):
-        self.client = pymongo.MongoClient(self.mongo_uri)
-        self.db = self.client[self.mongo_db]
+        self.connection = pika.BlockingConnection(
+            pika.ConnectionParameters(self.rabbitmq_uri))
+        self.channel = self.connection.channel()
+        self.channel.queue_declare(queue=self.rabbitmq_queue)
 
     def close_spider(self, spider):
-        self.client.close()
+        self.connection.close()
 
     def process_item(self, item, spider):
-        self.db[spider.name].insert_one(dict(item))
+        self.channel.basic_publish(
+            exchange='',
+            routing_key=self.rabbitmq_queue,
+            body=json.dumps(item.__dict__['_values']))
         return item

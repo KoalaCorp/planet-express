@@ -1,4 +1,3 @@
-from datetime import datetime
 import logging
 import time
 
@@ -64,7 +63,6 @@ class RedisDupeFilter(BaseDupeFilter):
                                    defaults.EXPIRE_REDIS_KEY)
         return cls(server, expire_secs=expire_secs, debug=debug)
 
-
     @classmethod
     def from_crawler(cls, crawler):
         """Returns instance from crawler.
@@ -77,7 +75,6 @@ class RedisDupeFilter(BaseDupeFilter):
         Instance of RFPDupeFilter.
         """
         return cls.from_settings(crawler.settings)
-
 
     def request_seen(self, request):
         """Returns True if request was already seen.
@@ -94,11 +91,13 @@ class RedisDupeFilter(BaseDupeFilter):
         key = self.request_fingerprint(request)
         last_timestamp = self.server.get(key)
         now_timestamp = time.time()
-        if not last_timestamp or (now_timestamp - float(last_timestamp)) > self.expire_secs:
+        if not last_timestamp or\
+           (now_timestamp - float(last_timestamp)) > self.expire_secs:
             self.server.set(key, now_timestamp)
             return True
         else:
             return False
+        return True
 
     def request_fingerprint(self, request):
         """Returns a fingerprint for a given request.
@@ -144,10 +143,14 @@ class RedisDupeFilter(BaseDupeFilter):
         """
         if self.debug:
             msg = "Filtered duplicate request: %(request)s"
-            self.logger.debug(msg, {'request': request}, extra={'spider': spider})
+            self.logger.debug(msg,
+                              {'request': request},
+                              extra={'spider': spider})
         elif self.logdupes:
             msg = ("Filtered duplicate request %(request)s"
                    " - no more duplicates will be shown"
                    " (see DUPEFILTER_DEBUG to show all duplicates)")
-            self.logger.debug(msg, {'request': request}, extra={'spider': spider})
+            self.logger.debug(msg,
+                              {'request': request},
+                              extra={'spider': spider})
             self.logdupes = False
