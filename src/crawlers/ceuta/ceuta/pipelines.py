@@ -30,7 +30,7 @@ class RabbitMQPipeline(object):
         self.connection = pika.BlockingConnection(
             pika.ConnectionParameters(self.rabbitmq_uri))
         self.channel = self.connection.channel()
-        self.channel.queue_declare(queue=self.rabbitmq_queue)
+        self.channel.queue_declare(queue=self.rabbitmq_queue, durable=True)
 
     def close_spider(self, spider):
         self.connection.close()
@@ -39,5 +39,6 @@ class RabbitMQPipeline(object):
         self.channel.basic_publish(
             exchange='',
             routing_key=self.rabbitmq_queue,
-            body=json.dumps(item.__dict__['_values']))
+            body=json.dumps(item.__dict__['_values']),
+            properties=pika.BasicProperties(delivery_mode=2))
         return item
