@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 # Scrapy settings for ceuta project
 #
@@ -91,8 +92,15 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-RABBITMQ_URI = 'localhost'
+
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_PORT = os.getenv('RABBITMQ_PORT', '5672')
 RABBITMQ_QUEUE = 'items'
+
+REDIS_PARAMS = {
+    "host": os.getenv('REDIS_HOST', 'localhost'),
+    "port": os.getenv('REDIS_PORT', '6379')
+}
 
 FILE_FOLDER = '/tmp'
 

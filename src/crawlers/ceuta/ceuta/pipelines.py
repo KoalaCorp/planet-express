@@ -15,20 +15,22 @@ class CeutaPipeline(object):
 
 
 class RabbitMQPipeline(object):
-    def __init__(self, rabbitmq_uri, rabbitmq_queue):
-        self.rabbitmq_uri = rabbitmq_uri
+    def __init__(self, rabbitmq_host, rabbitmq_port, rabbitmq_queue):
+        self.rabbitmq_host = rabbitmq_host
+        self.rabbitmq_port = rabbitmq_port
         self.rabbitmq_queue = rabbitmq_queue
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
-            rabbitmq_uri=crawler.settings.get('RABBITMQ_URI'),
+            rabbitmq_host=crawler.settings.get('RABBITMQ_HOST'),
+            rabbitmq_port=crawler.settings.get('RABBITMQ_PORT'),
             rabbitmq_queue=crawler.settings.get('RABBITMQ_QUEUE', 'items')
         )
 
     def open_spider(self, spider):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(self.rabbitmq_uri))
+            pika.ConnectionParameters(self.rabbitmq_host, self.rabbitmq_port))
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=self.rabbitmq_queue, durable=True)
 
