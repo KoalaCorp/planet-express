@@ -61,20 +61,24 @@ class RedisDupeFilter(BaseDupeFilter):
         debug = settings.getbool('DUPEFILTER_DEBUG')
         expire_secs = settings.get("EXPIRE_REDIS_KEY",
                                    defaults.EXPIRE_REDIS_KEY)
+        print("*"*100)
+        print("FROM SETTINGS")
         return cls(server, expire_secs=expire_secs, debug=debug)
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        """Returns instance from crawler.
-        Parameters
-        ----------
-        crawler : scrapy.crawler.Crawler
-        Returns
-        -------
-        RFPDupeFilter
-        Instance of RFPDupeFilter.
-        """
-        return cls.from_settings(crawler.settings)
+    #
+    # @classmethod
+    # def from_crawler(cls, crawler):
+    #     """Returns instance from crawler.
+    #     Parameters
+    #     ----------
+    #     crawler : scrapy.crawler.Crawler
+    #     Returns
+    #     -------
+    #     RFPDupeFilter
+    #     Instance of RFPDupeFilter.
+    #     """
+    #     print("*"*100)
+    #     print("FROM CRAWLER")
+    #     return cls.from_settings(crawler.settings)
 
     def request_seen(self, request):
         """Returns True if request was already seen.
@@ -88,16 +92,15 @@ class RedisDupeFilter(BaseDupeFilter):
         bool
 
         """
+        # import ipdb; ipdb.set_trace()
         key = self.request_fingerprint(request)
         last_timestamp = self.server.get(key)
         now_timestamp = time.time()
         if not last_timestamp or\
            (now_timestamp - float(last_timestamp)) > self.expire_secs:
             self.server.set(key, now_timestamp)
-            return True
         else:
-            return False
-        return True
+            return True
 
     def request_fingerprint(self, request):
         """Returns a fingerprint for a given request.
@@ -112,15 +115,17 @@ class RedisDupeFilter(BaseDupeFilter):
 
         """
         return request_fingerprint(request)
-
-    @classmethod
-    def from_spider(cls, spider):
-        settings = spider.settings
-        server = get_redis_from_settings(settings)
-        expire_secs = settings.get("EXPIRE_REDIS_KEY",
-                                   defaults.EXPIRE_REDIS_KEY)
-        debug = settings.getbool('DUPEFILTER_DEBUG')
-        return cls(server, expire_secs=expire_secs, debug=debug)
+    #
+    # @classmethod
+    # def from_spider(cls, spider):
+    #     settings = spider.settings
+    #     server = get_redis_from_settings(settings)
+    #     expire_secs = settings.get("EXPIRE_REDIS_KEY",
+    #                                defaults.EXPIRE_REDIS_KEY)
+    #     debug = settings.getbool('DUPEFILTER_DEBUG')
+    #     print("*"*100)
+    #     print("FROM SPIDER")
+    #     return cls(server, expire_secs=expire_secs, debug=debug)
 
     def close(self, reason=''):
         """Delete data on close. Called by Scrapy's scheduler.

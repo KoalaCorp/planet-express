@@ -13,7 +13,7 @@ class ElfarodeceutaSpider(CrawlSpider):
         'RABBITMQ_QUEUE': 'elfarodeceuta',
     }
     rules = (
-        Rule(LinkExtractor(allow=r''), callback='parse_item', follow=True),
+        Rule(LinkExtractor(deny=r'.*#.*'), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
