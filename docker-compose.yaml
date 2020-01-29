@@ -12,7 +12,7 @@ services:
     networks:
       - planet-express-network
     volumes:
-      - deploy/rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
+      - ./deploy/rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
   redis:
     image: redis
     container_name: redis
