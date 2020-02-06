@@ -8,12 +8,13 @@ from ceuta.loaders import el_faro_de_ceuta_loader
 class ElfarodeceutaSpider(CrawlSpider):
     name = 'elfarodeceuta'
     allowed_domains = ['elfarodeceuta.es']
-    start_urls = ['https://elfarodeceuta.es/']
+    start_urls = ['https://elfarodeceuta.es/page/1/?s=']
     custom_settings = {
         'RABBITMQ_QUEUE': 'elfarodeceuta',
     }
     rules = (
-        Rule(LinkExtractor(deny=r'.*#.*'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=r'.*/page/\d+/\?s'), follow=True),
+        Rule(LinkExtractor(deny=r'.*#.*'), callback='parse_item', follow=True)
     )
 
     def parse_item(self, response):

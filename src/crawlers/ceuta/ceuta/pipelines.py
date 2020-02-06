@@ -46,7 +46,7 @@ class RabbitMQPipeline(object):
             pika.ConnectionParameters(self.rabbitmq_host, self.rabbitmq_port,
                                       '/', credentials))
         self.channel = self.connection.channel()
-        self.channel.queue_declare(queue=self.rabbitmq_queue, durable=True)
+        self.channel.queue_declare(queue=self.rabbitmq_queue)
         self.channel.basic_publish(
             exchange='',
             routing_key=self.rabbitmq_queue,
