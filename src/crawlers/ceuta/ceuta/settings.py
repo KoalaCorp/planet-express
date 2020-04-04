@@ -104,9 +104,9 @@ REDIS_PARAMS = {
     "port": os.getenv('REDIS_PORT', '6379')
 }
 
-FILE_FOLDER = '/tmp'
+FILE_FOLDER = os.getenv('FILES', '/tmp')
 
 DUPEFILTER_CLASS = "ceuta.dupefilter.RedisDupeFilter"
 
 # 30 days in seconds
-EXPIRE_REDIS_KEY = 1
+EXPIRE_REDIS_KEY = 10

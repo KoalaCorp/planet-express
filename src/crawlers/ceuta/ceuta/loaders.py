@@ -1,5 +1,4 @@
 import logging
-import subprocess
 
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst, Join
@@ -22,11 +21,6 @@ def bocce_loader(response, file_path, name):
     logger.info('{} file downloaded: {}'.format(
         name, file_path))
 
-    content = subprocess.run(['pdftotext', file_path, '-'],
-                             stdout=subprocess.PIPE)
-    bocce['content'] = str(content.stdout, 'utf-8')\
-        .replace('\n ', '').replace('\n', ' ')
-
     return bocce
 
 
@@ -41,9 +35,9 @@ def el_pueblo_de_ceuta_loader(response):
         response=response)
     item.add_value('url', response.url)
     item.add_xpath('autor', '//div[@class="firma"]/text()')
-    item.add_xpath('date_time', '//div[@class="fecha"]/text()')
-    item.add_xpath('title', '//div[@class="NOTICIA"]/h1/text()')
-    item.add_xpath('content', '//div[@class="TEXTO_PARRAFO "]/p/text()')
+    item.add_xpath('date_time', '//span[@class="date"]/text()')
+    item.add_xpath('title', '//h1[@class="new_title"]/text()')
+    item.add_xpath('content', '//div[@class="new_text "]/p/text()')
     return item.load_item()
 
 
