@@ -9,9 +9,13 @@ class ElpueblodeceutaSpider(CrawlSpider):
     name = 'elpueblodeceuta'
     allowed_domains = ['elpueblodeceuta.es']
     start_urls = ['http://elpueblodeceuta.es/']
+    custom_settings = {
+        'RABBITMQ_QUEUE': 'elpueblodeceuta',
+    }
 
     rules = (
-        Rule(LinkExtractor(allow=r'not/\d+/'), callback='parse_item',
+        Rule(LinkExtractor(allow=r'/sec/.*'), follow=True),
+        Rule(LinkExtractor(allow=r'\w+/\d+/\w+'), callback='parse_item',
              follow=True),
         Rule(LinkExtractor(allow=r'.*'), follow=True),
     )
