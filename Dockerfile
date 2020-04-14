@@ -10,4 +10,5 @@ RUN apt-get update && apt-get -y install gcc && rm -rf /var/lib/apt/lists/*
 
 ADD requirements.txt /crawlers/requirements.txt
 RUN pip install -r /crawlers/requirements.txt
-ADD src/crawlers/ceuta /ceuta
+
+COPY src /

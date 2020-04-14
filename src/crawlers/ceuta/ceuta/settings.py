@@ -24,14 +24,14 @@ USER_AGENT = 'planet-express (+https://github.com/KoalaCorp/planet-express)'
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 1
+CONCURRENT_REQUESTS = 1
 
 # Configure a delay for requests for the same website (default: 0)
 # See
 # http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 # The download delay setting will honor only one of:
-# DOWNLOAD_DELAY = 5
+DOWNLOAD_DELAY = 30
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
 
