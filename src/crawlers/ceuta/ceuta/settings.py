@@ -109,4 +109,4 @@ FILE_FOLDER = os.getenv('FILES', '/tmp')
 DUPEFILTER_CLASS = "ceuta.dupefilter.RedisDupeFilter"
 
 # 30 days in seconds
-EXPIRE_REDIS_KEY = 10
+EXPIRE_REDIS_KEY = 200
