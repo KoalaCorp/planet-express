@@ -10,12 +10,7 @@ We install the python libraries from requiriments.txt with pip, we use python3
 pip install -r requirements.txt
 ```
 
-For development purposes, we include a docker-compose with redis and rabbitmq
-docker images and a docker network to comunicate with other modules of
-planet express.
-```bash
-docker-compose up
-```
+For development purposes you can use [koalacorp/planet-express-charts](https://github.com/KoalaCorp/planet-express-charts)
 
 ## Usage
 
